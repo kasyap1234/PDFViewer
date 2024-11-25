@@ -1,0 +1,59 @@
+syntax ="proto3";
+package document;
+option go_package ="github.com/kasyap1234/pdfviewer/proto/document";
+
+service DocumentManager {
+    rpc UploadDocument (stream UploadDocumentRequest) returns (UploadDocumentResponse);
+    rpc GetDocument (GetDocumentRequest) returns (GetDocumentResponse);
+    rpc ListDocuments (ListDocumentsRequest) returns (ListDocumentsResponse);
+    rpc UpdateMetaData (UpdateMetaDataRequest) returns (UpdateMetaDataResponse);
+    rpc DeleteDocument (DeleteDocumentRequest) returns (DcocumentMetadata);
+}
+
+message UploadDocumentRequest{
+    oneof data {
+        DcocumentMetadata metadata =1; 
+        bytes chunk=2; 
+
+    }
+
+}
+
+message UploadResponse {
+    string document_id = 1;
+    DocumentMetadata metadata = 2;
+}
+
+message DocumentMetadata {
+    string id = 1;
+    string title = 2;
+    string owner_id = 3;
+    int64 size_bytes = 4;
+    string mime_type = 5;
+    int64 created_at = 6;
+    int64 updated_at = 7;
+}
+
+message GetDocumentRequest {
+    string document_id = 1;
+}
+
+message GetDocumentResponse {
+    bytes chunk = 1;
+}
+
+message ListDocumentsRequest {
+    string owner_id = 1;
+    int32 page = 2;
+    int32 page_size = 3;
+}
+
+message ListDocumentsResponse {
+    repeated DocumentMetadata documents = 1;
+    int32 total_count = 2;
+}
+
+message UpdateMetadataRequest {
+    string document_id = 1;
+    DocumentMetadata metadata = 2;
+}
