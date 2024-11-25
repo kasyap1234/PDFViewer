@@ -7,7 +7,7 @@ service PDFProcessor{
     rpc GetPDFPage(PDFPageRequest) returns (PDFPageResponse);
    
     rpc SearchPDF(SearchPDFRequest) returns (SearchPDFResponse);
-    rpc ExtractText(ExtractTextRequest) returns (ExtractTextResponse);
+    rpc ExtractText(TextExtractionRequest) returns (TextExtractionResponse);
 
 }
 
@@ -49,4 +49,23 @@ message SearchMatch {
     string text = 1;
     float confidence = 2;
     BoundingBox bounds = 3;
+}
+message BoundingBox {
+    float x = 1;
+    float y = 2;
+    float width = 3;
+    float height = 4;
+}
+message TextExtractionRequest {
+    string file_id = 1;
+    optional int32 page_number = 2; // If not set, extract from all pages
+}
+
+message TextExtractionResponse {
+    repeated PageText pages = 1;
+}
+
+message PageText {
+    int32 page_number = 1;
+    string content = 2;
 }
