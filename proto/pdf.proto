@@ -1,6 +1,6 @@
 syntax="proto3"; 
 package pdf; 
-option go_package ="github.com/kasyap1234/pdfviewer/proto/pdf"; 
+option go_package ="api/gen/pdf"; 
 
 service PDFProcessor{
     rpc GetPDFInfo(PDFInfoRequest) returns (PDFInfoResponse);

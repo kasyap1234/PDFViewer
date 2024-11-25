@@ -1,28 +1,30 @@
 syntax ="proto3";
 package document;
-option go_package ="github.com/kasyap1234/pdfviewer/proto/document";
+option go_package ="api/gen/document";
 
 service DocumentManager {
     rpc UploadDocument (stream UploadDocumentRequest) returns (UploadDocumentResponse);
     rpc GetDocument (GetDocumentRequest) returns (GetDocumentResponse);
     rpc ListDocuments (ListDocumentsRequest) returns (ListDocumentsResponse);
     rpc UpdateMetaData (UpdateMetaDataRequest) returns (UpdateMetaDataResponse);
-    rpc DeleteDocument (DeleteDocumentRequest) returns (DcocumentMetadata);
+    rpc DeleteDocument (DeleteDocumentRequest) returns (DocumentMetadata);
 }
 
 message UploadDocumentRequest{
     oneof data {
-        DcocumentMetadata metadata =1; 
+        DocumentMetadata metadata =1; 
         bytes chunk=2; 
 
     }
 
 }
 
-message UploadResponse {
+message UploadDocumentResponse {
     string document_id = 1;
     DocumentMetadata metadata = 2;
 }
+
+
 
 message DocumentMetadata {
     string id = 1;
@@ -53,7 +55,19 @@ message ListDocumentsResponse {
     int32 total_count = 2;
 }
 
-message UpdateMetadataRequest {
+message UpdateMetaDataRequest {
     string document_id = 1;
     DocumentMetadata metadata = 2;
 }
+message UpdateMetaDataResponse {
+    DocumentMetadata metadata = 1;
+    bool success = 2;
+} 
+
+message DeleteDocumentRequest {
+string document_id = 1;
+}
+message DeleteDocumentResponse {
+    bool success = 1;
+}
+
