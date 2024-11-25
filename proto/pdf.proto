@@ -1,0 +1,52 @@
+syntax="proto3"; 
+package pdf; 
+option go_package ="github.com/kasyap1234/pdfviewer/proto/pdf"; 
+
+service PDFProcessor{
+    rpc GetPDFInfo(PDFInfoRequest) returns (PDFInfoResponse);
+    rpc GetPDFPage(PDFPageRequest) returns (PDFPageResponse);
+   
+    rpc SearchPDF(SearchPDFRequest) returns (SearchPDFResponse);
+    rpc ExtractText(ExtractTextRequest) returns (ExtractTextResponse);
+
+}
+
+
+message PDFInfoRequest {
+    string file_path = 1;
+}
+
+message PDFInfoResponse {
+int32 page_count = 1;
+string file_name=2; 
+string author=3; 
+bool is_encrypted=4;
+
+}
+
+message PDFPageRequest {
+    string file_path = 1;
+    string file_id=2; 
+    int32 page_number = 3; 
+
+}
+
+message PDFPageResponse {
+    bytes page_data = 1;
+}
+
+message SearchPDFRequest {
+string file_id=1; 
+string query=2; 
+}
+
+message SearchPDFResponse {
+    int32 page_number = 1;
+    repeated SearchMatch matches = 2;
+}
+
+message SearchMatch {
+    string text = 1;
+    float confidence = 2;
+    BoundingBox bounds = 3;
+}
